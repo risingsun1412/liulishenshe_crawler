@@ -11,11 +11,12 @@ def get_pages():#获取动漫资源的页数
 def download(each_url):#获取每一个资源的磁力链
     url_text = get(each_url).text
     res_magnet = findall(r'([0-9a-fA-F]{40})', url_text)#可能有多个
+    magnet_set = set(res_magnet)#使用set去重
     res_title = findall(r'<h1 class="entry-title">(.*?)</h1>', url_text)#唯一的
     with open('./magnet_links.txt', 'a+', encoding = 'utf-8') as f:
         if res_title is not None:
             f.write(res_title[0] + ':\n')
-            for each in res_magnet:
+            for each in magnet_set:
                 f.write('        magnet:?xt=urn:btih:' + each + '\n')
         else:
             print('Cannot find suitable links! Skip it!')
@@ -30,8 +31,8 @@ def visit_each_page(pages):#进入每一个页面找资源
         now_res = findall('href="(http://www.llss.news/wp/all/anime/.*?more.*?)"', now_page_text)
         for each in now_res:
             download(each)
-            print('sleep for 0.1s')
-            sleep(0.1)
+            print('sleep for 2s')
+            sleep(2)
 if __name__ == "__main__":
     pages = get_pages()
     visit_each_page(pages)
