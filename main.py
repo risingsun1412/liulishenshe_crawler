@@ -3,7 +3,7 @@ from re import findall
 from time import sleep
 
 def get_pages():#获取动漫资源的页数
-    from_url = 'http://www.llss.red/wp/category/all/anime/'
+    from_url = 'http://www.llss.at/wp/category/all/anime/'
     res_get = get(from_url)
     res = findall(r'>第 1 页，共 ([1-9]\d+) 页</span>', res_get.text)
     return int(res[0])
@@ -23,12 +23,12 @@ def download(each_url):#获取每一个资源的磁力链
             return
 
 def visit_each_page(pages):#进入每一个页面找资源
-    root_url = 'http://www.llss.red/wp/category/all/anime/page/'
+    root_url = 'http://www.llss.at/wp/category/all/anime/page/'
     for i in range(1, pages + 1):
         print('Now in page %d'%i)
         now_url = root_url + str(i) + '/'
         now_page_text = get(now_url).text
-        now_res = findall('href="(http://www.llss.red/wp/all/anime/.*?more.*?)"', now_page_text)
+        now_res = findall('href="(http://www.llss.at/wp/all/anime/.*?more.*?)"', now_page_text)
         for each in now_res:
             download(each)
             print('sleep for 2s')
